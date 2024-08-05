@@ -1,12 +1,11 @@
-// index.js
 const app = require("./src/server");
 const dbConfig = require("./src/config/dbConfig");
 
-module.exports = async (req, res) => {
-  try {
-    await dbConfig();
-    app(req, res);
-  } catch (err) {
-    res.status(500).send("Error en la conexión: " + err.message);
-  }
-};
+dbConfig().then((res) => {
+  app.listen(3000, () => {
+    console.log("servidor escuchando en el puerto 3000");
+  });
+})
+.catch((err) => {
+  console.log("Falto en la conexión" + err.message);
+})
